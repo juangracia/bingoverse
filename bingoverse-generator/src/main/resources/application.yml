@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27117/bingoverse
+server:
+  port: 8081
+bingoverse:
+  config:
+    base-url: http://localhost:8081
