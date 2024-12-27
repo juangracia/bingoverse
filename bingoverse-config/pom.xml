@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com</groupId>
-	<artifactId>bingoverse.config</artifactId>
+	<artifactId>bingoverse-config</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>bingoverse.config</name>
 	<description>A customizable bingo generator for any topic, creating unique experiences for players worldwide. Config module</description>
