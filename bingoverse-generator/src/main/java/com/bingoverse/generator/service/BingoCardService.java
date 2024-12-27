@@ -6,15 +6,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Service class responsible for generating bingo cards based on topics fetched from the ConfigService.
+ */
 @Service
 public class BingoCardService {
 
     private final ConfigService configService;
 
+    /**
+     * Constructor to initialize BingoCardService with ConfigService dependency.
+     *
+     * @param configService the service used to fetch topics for generating bingo cards.
+     */
     public BingoCardService(ConfigService configService) {
         this.configService = configService;
     }
 
+    /**
+     * Generates a specified number of bingo cards, each containing exactly 5 unique topics.
+     *
+     * @param category the category of topics to fetch from the ConfigService.
+     * @param count    the number of bingo cards to generate.
+     * @return a list of bingo cards, where each card is a list of 5 unique topics.
+     * @throws IllegalArgumentException if there are fewer than 5 topics available in the specified category.
+     */
     public List<List<String>> generateBingoCards(String category, int count) {
         List<String> topics = new ArrayList<>(configService.fetchTopics(category)); // Create a mutable copy
         if (topics.size() < 5) {
