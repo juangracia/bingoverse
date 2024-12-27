@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5532/bingoverse
+    username: postgres
+    password: bingo
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
