@@ -1,33 +1,45 @@
-
 package com.bingoverse.generator.controller;
 
 import com.bingoverse.generator.service.BingoCardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 /**
- * REST controller for managing bingo card generation requests.
+ * Controller for handling bingo card generation requests.
  */
 @RestController
 @RequestMapping("/bingo")
 @RequiredArgsConstructor
+@Tag(name = "Bingo API", description = "Endpoints for generating and retrieving bingo cards")
 public class BingoController {
 
     private final BingoCardService bingoCardService;
 
     /**
-     * Endpoint to generate a specified number of bingo cards based on a topic category.
+     * Generates a specified number of bingo cards using topics from the given category.
      *
-     * @param category the category of topics to use for generating bingo cards.
-     * @param count the number of bingo cards to generate.
-     * @return a list of generated bingo cards.
+     * @param category the category of topics to generate bingo cards from
+     * @param count    the number of bingo cards to generate
+     * @return a list of bingo cards, each containing a set of topics
      */
     @GetMapping("/{category}/{count}")
-    public List<List<String>> generateBingoCards(@PathVariable String category, @PathVariable int count) {
+    @Operation(
+        summary = "Generate bingo cards",
+        description = "Generates a specified number of bingo cards using topics from the given category."
+    )
+    public List<List<String>> generateBingoCards(
+        @Parameter(description = "Category of topics to generate bingo cards from", example = "bands_80s")
+        @PathVariable String category,
+        @Parameter(description = "Number of bingo cards to generate", example = "3")
+        @PathVariable int count) {
         return bingoCardService.generateBingoCards(category, count);
     }
 }

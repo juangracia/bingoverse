@@ -1,5 +1,8 @@
 package com.bingoverse.generator.service;
 
+import com.bingoverse.generator.model.BingoCard;
+import com.bingoverse.generator.repository.BingoCardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +16,9 @@ import java.util.List;
 public class BingoCardService {
 
     private final ConfigService configService;
+
+    @Autowired
+    private BingoCardRepository repository;
 
     /**
      * Constructor to initialize BingoCardService with ConfigService dependency.
@@ -43,5 +49,13 @@ public class BingoCardService {
             bingoCards.add(new ArrayList<>(topics.subList(0, 5))); // Take the first 5 items
         }
         return bingoCards;
+    }
+
+    public BingoCard saveCard(BingoCard card) {
+        return repository.save(card);
+    }
+
+    public List<BingoCard> getAllCards() {
+        return repository.findAll();
     }
 }
