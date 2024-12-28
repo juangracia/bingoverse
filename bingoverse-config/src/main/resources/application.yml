@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5532/bingoverse
+    url: jdbc:postgresql://host.docker.internal:5532/bingoverse
     username: postgres
     password: bingo
   jpa:
