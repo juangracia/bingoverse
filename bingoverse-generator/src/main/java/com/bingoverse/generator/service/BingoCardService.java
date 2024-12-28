@@ -25,8 +25,9 @@ public class BingoCardService {
      *
      * @param configService the service used to fetch topics for generating bingo cards.
      */
-    public BingoCardService(ConfigService configService) {
+    public BingoCardService(ConfigService configService, BingoCardRepository repository) {
         this.configService = configService;
+        this.repository = repository;
     }
 
     /**

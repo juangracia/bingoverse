@@ -1,5 +1,6 @@
 package com.bingoverse.generator.controller;
 
+import com.bingoverse.generator.model.BingoCard;
 import com.bingoverse.generator.service.BingoCardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -7,6 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,5 +44,17 @@ public class BingoController {
         @Parameter(description = "Number of bingo cards to generate", example = "3")
         @PathVariable int count) {
         return bingoCardService.generateBingoCards(category, count);
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "Retrieve all bingo cards", description = "Fetches all saved bingo cards from the database.")
+    public List<BingoCard> getAllCards() {
+        return bingoCardService.getAllCards();
+    }
+
+    @PostMapping("/save")
+    @Operation(summary = "Save a bingo card", description = "Saves a bingo card to the database.")
+    public BingoCard saveCard(@RequestBody BingoCard card) {
+        return bingoCardService.saveCard(card);
     }
 }

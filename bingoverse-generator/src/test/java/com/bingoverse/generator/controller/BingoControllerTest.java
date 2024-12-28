@@ -1,5 +1,7 @@
+// src/test/java/com/bingoverse/generator/controller/BingoControllerTest.java
 package com.bingoverse.generator.controller;
 
+import com.bingoverse.generator.model.BingoCard;
 import com.bingoverse.generator.service.BingoCardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class BingoControllerTest {
@@ -50,5 +53,36 @@ public class BingoControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(3));
+    }
+
+    @Test
+    public void testGetAllCards() throws Exception {
+        // Mocked response
+        List<BingoCard> mockCards = List.of(new BingoCard(), new BingoCard());
+
+        // Setting up mock behavior
+        Mockito.when(bingoCardService.getAllCards()).thenReturn(mockCards);
+
+        // Performing the request and validating the response
+        mockMvc.perform(get("/bingo/all")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    public void testSaveCard() throws Exception {
+        // Mocked request and response
+        BingoCard card = new BingoCard();
+        card.setItems(List.of("Queen", "U2", "The Cure", "Depeche Mode", "Duran Duran"));
+        Mockito.when(bingoCardService.saveCard(Mockito.any(BingoCard.class))).thenReturn(card);
+
+        // Performing the request and validating the response
+        mockMvc.perform(post("/bingo/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"items\": [\"Queen\", \"U2\", \"The Cure\", \"Depeche Mode\", \"Duran Duran\"]}")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.items.length()").value(5));
     }
 }

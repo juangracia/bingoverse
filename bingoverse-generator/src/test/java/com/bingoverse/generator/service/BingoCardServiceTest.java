@@ -1,5 +1,11 @@
+// src/test/java/com/bingoverse/generator/service/BingoCardServiceTest.java
 package com.bingoverse.generator.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import com.bingoverse.generator.model.BingoCard;
+import com.bingoverse.generator.repository.BingoCardRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -8,9 +14,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 public class BingoCardServiceTest {
 
     private BingoCardService bingoCardService;
@@ -18,10 +21,13 @@ public class BingoCardServiceTest {
     @Mock
     private ConfigService configService;
 
+    @Mock
+    private BingoCardRepository repository;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        bingoCardService = new BingoCardService(configService); // Inject mock ConfigService
+        bingoCardService = new BingoCardService(configService, repository);
     }
 
     @Test
@@ -45,5 +51,26 @@ public class BingoCardServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {
             bingoCardService.generateBingoCards(category, 3);
         });
+    }
+
+    @Test
+    public void testSaveCard() {
+        BingoCard card = new BingoCard();
+        card.setItems(List.of("Queen", "U2", "The Cure", "Depeche Mode", "Duran Duran"));
+        Mockito.when(repository.save(card)).thenReturn(card);
+
+        BingoCard savedCard = bingoCardService.saveCard(card);
+
+        assertEquals(card, savedCard);
+    }
+
+    @Test
+    public void testGetAllCards() {
+        List<BingoCard> mockCards = List.of(new BingoCard(), new BingoCard());
+        Mockito.when(repository.findAll()).thenReturn(mockCards);
+
+        List<BingoCard> cards = bingoCardService.getAllCards();
+
+        assertEquals(mockCards, cards);
     }
 }

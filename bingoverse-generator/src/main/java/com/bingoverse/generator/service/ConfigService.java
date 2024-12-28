@@ -1,9 +1,11 @@
 
 package com.bingoverse.generator.service;
 
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 
 /**
@@ -12,6 +14,12 @@ import java.util.List;
 @Service
 public class ConfigService {
 
+    /**
+     * -- SETTER -- Updates the base URL for the configuration service.
+     *
+     * @param configBaseUrl the base URL for the configuration service.
+     */
+    @Setter
     @Value("${bingoverse.config.base-url}")
     private String configBaseUrl;
 
@@ -24,15 +32,6 @@ public class ConfigService {
      */
     public ConfigService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-    }
-
-    /**
-     * Updates the base URL for the configuration service.
-     *
-     * @param configBaseUrl the base URL for the configuration service.
-     */
-    public void setConfigBaseUrl(String configBaseUrl) {
-        this.configBaseUrl = configBaseUrl;
     }
 
     /**
