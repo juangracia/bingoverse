@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  postgres-bingo:
+    image: postgres
+    container_name: postgres-bingo
+    ports:
+      - "5532:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bingo
+      POSTGRES_DB: bingoverse
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  bingoverse-mongo:
+    image: mongo:latest
+    container_name: bingoverse-mongo
+    ports:
+      - "27117:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  bingoverse-config:
+    image: bingoverse-config
+    container_name: bingoverse-config
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-bingo:5432/bingoverse
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: bingo
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres-bingo
+
+  bingoverse-generator:
+    image: bingoverse-generator
+    container_name: bingoverse-generator
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-bingo:5432/bingoverse
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: bingo
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres-bingo
+      - bingoverse-mongo
+
+volumes:
+  postgres_data:
+  mongo_data:
